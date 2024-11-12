@@ -1,0 +1,63 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table user {
+  id integer [primary key]
+  firstname text [note: 'First Name']
+  lastname text [note: 'Last name']
+  email text [note: 'email address']
+  type text [note: 'admin, user']
+  status text [note: 'active, inactive']
+  date_created datetime
+ }
+
+Table post {
+  id integer [primary key]
+  name text
+  user_id integer [note: 'links to a user']
+  date_created datetime
+  date_last_updated datetime
+}
+
+Table media {
+    id integer [primary key]
+    post_id integer
+    filename text
+    type text [note: 'image, video, audio']
+    height integer [note: 'height in pixels']
+    width integer [note: 'width in pixels']
+    url text
+    date_created datetime
+    purpose text [note: 'cover, photo, profile']
+}
+
+Table comment {
+  id integer [pk]
+  comment text
+  user_id integer [note: 'the user who created the comment']
+  date_created datetime
+  post_id integer
+}
+
+Table like {
+  id integer [pk]
+  post_id integer
+  user_id integer
+  date_created date
+}
+
+Table post_text {
+  id integer [pk]
+  content text
+  date_created date
+  post_id integer
+  purpose text [note: 'description, components, build steps']
+}
+
+Ref: user.id < post.user_id
+Ref: user.id < comment.user_id
+Ref: user.id < like.user_id
+Ref: post.id < like.post_id
+Ref: post.id < comment.post_id
+Ref: post.id < media.post_id
+Ref: post.id < post_text.post_id
